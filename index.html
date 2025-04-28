@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ghost Wallet Demo</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+</head>
+<body>
+  <h1>Ghost Wallet</h1>
+  <button onclick="connectWallet()">Connect Wallet</button>
+  <div>
+    <p>Normal Wallet: <span id="normalBalance">0 ETH</span></p>
+    <p>Ghost Wallet: <span id="ghostBalance">0 ETH</span></p>
+  </div>
+  <button onclick="sendTransaction()">Spend $100 (10% to Ghost)</button>
+
+  <script>
+    // Mock blockchain interaction (replace with real contract later)
+    let normalBalance = 1000;
+    let ghostBalance = 0;
+
+    function connectWallet() {
+      alert("Mock: Wallet connected!");
+    }
+
+    function sendTransaction() {
+      const amount = 100;
+      const ghostAmount = amount * 0.1; // 10% to Ghost
+      normalBalance -= amount;
+      ghostBalance += ghostAmount;
+      
+      document.getElementById("normalBalance").textContent = normalBalance + " ETH";
+      document.getElementById("ghostBalance").textContent = ghostBalance + " ETH";
+      alert("$10 sent to Ghost Wallet!");
+    }
+  </script>
+</body>
+</html>
