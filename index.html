@@ -1,37 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Ghost Wallet Demo</title>
-  <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vexa - Ghost Wallet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-  <h1>Ghost Wallet</h1>
-  <button onclick="connectWallet()">Connect Wallet</button>
-  <div>
-    <p>Normal Wallet: <span id="normalBalance">0 ETH</span></p>
-    <p>Ghost Wallet: <span id="ghostBalance">0 ETH</span></p>
-  </div>
-  <button onclick="sendTransaction()">Spend $100 (10% to Ghost)</button>
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-white">
+    
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <!-- Header -->
+        <div class="text-center mb-12 animate-fade-in">
+            <img src="https://i.ibb.co/0jQ3ZzT/vexa-logo.png" alt="Vexa Logo" class="w-24 mx-auto mb-4">
+            <h1 class="text-3xl font-bold mb-2">Ghost Wallet</h1>
+            <p class="text-gray-400">Your secure blockchain vault</p>
+        </div>
 
-  <script>
-    // Mock blockchain interaction (replace with real contract later)
-    let normalBalance = 1000;
-    let ghostBalance = 0;
+        <!-- Wallet Connection Card -->
+        <div class="bg-gray-800 rounded-2xl p-6 mb-8 shadow-xl transform transition hover:scale-102">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-semibold mb-1">Wallet Status</h2>
+                    <p class="text-gray-400 text-sm" id="walletStatus">Not Connected</p>
+                </div>
+                <button onclick="connectWallet()" 
+                        class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-medium transition">
+                    <i class="fas fa-plug mr-2"></i>Connect
+                </button>
+            </div>
+        </div>
 
-    function connectWallet() {
-      alert("Mock: Wallet connected!");
-    }
+        <!-- Balances -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <!-- Normal Wallet -->
+            <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="bg-blue-600 p-3 rounded-lg mr-4">
+                        <i class="fas fa-wallet text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-400 text-sm">Available Balance</h3>
+                        <p class="text-2xl font-bold" id="normalBalance">$4,320.00</p>
+                    </div>
+                </div>
+            </div>
 
-    function sendTransaction() {
-      const amount = 100;
-      const ghostAmount = amount * 0.1; // 10% to Ghost
-      normalBalance -= amount;
-      ghostBalance += ghostAmount;
-      
-      document.getElementById("normalBalance").textContent = normalBalance + " ETH";
-      document.getElementById("ghostBalance").textContent = ghostBalance + " ETH";
-      alert("$10 sent to Ghost Wallet!");
-    }
-  </script>
+            <!-- Ghost Wallet -->
+            <div class="bg-gray-800 p-6 rounded-2xl shadow-lg border-2 border-green-500">
+                <div class="flex items-center mb-4">
+                    <div class="bg-green-500 p-3 rounded-lg mr-4">
+                        <i class="fas fa-ghost text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-400 text-sm">Secured Savings</h3>
+                        <p class="text-2xl font-bold" id="ghostBalance">$12,450.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction History -->
+        <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+            <h3 class="text-lg font-semibold mb-4"><i class="fas fa-history mr-2"></i>Recent Activity</h3>
+            <div class="space-y-4" id="transactions">
+                <!-- Sample Transactions -->
+                <div class="bg-gray-700 p-4 rounded-lg flex items-center">
+                    <div class="w-8 text-center mr-4 text-green-400">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span>Ghost Deposit</span>
+                            <span class="font-mono">+$150.00</span>
+                        </div>
+                        <div class="text-gray-400 text-sm">2 hours ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transfer Button -->
+        <button onclick="simulateTransaction()"
+                class="fixed bottom-8 right-8 bg-green-500 hover:bg-green-600 p-4 rounded-full shadow-xl animate-bounce">
+            <i class="fas fa-shield-alt text-2xl"></i>
+        </button>
+    </div>
+
+    <script>
+        // Mock Blockchain Interaction
+        let normalBalance = 4320.00;
+        let ghostBalance = 12450.00;
+
+        function connectWallet() {
+            document.getElementById('walletStatus').innerHTML = 
+                '<span class="text-green-400">Connected <i class="fas fa-check-circle"></i></span>';
+        }
+
+        function simulateTransaction() {
+            // Deduct 10% from normal balance
+            const amount = 100;
+            const ghostAmount = amount * 0.1;
+            
+            normalBalance -= amount;
+            ghostBalance += ghostAmount;
+            
+            // Update UI
+            document.getElementById('normalBalance').textContent = `$${normalBalance.toFixed(2)}`;
+            document.getElementById('ghostBalance').textContent = `$${ghostBalance.toFixed(2)}`;
+            
+            // Add transaction
+            const newTransaction = `
+                <div class="bg-gray-700 p-4 rounded-lg flex items-center">
+                    <div class="w-8 text-center mr-4 text-green-400">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span>Auto-Save</span>
+                            <span class="font-mono">+$${ghostAmount.toFixed(2)}</span>
+                        </div>
+                        <div class="text-gray-400 text-sm">Just now</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('transactions').insertAdjacentHTML('afterbegin', newTransaction);
+        }
+    </script>
+
 </body>
 </html>
